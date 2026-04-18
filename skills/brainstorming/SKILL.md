@@ -113,7 +113,7 @@ Commit the spec. Then self-review with fresh eyes:
 3. Scope check — focused enough for a single plan, or needs decomposition?
 4. Ambiguity check — any requirement readable two ways? Pick one.
 
-Update Phase 4 of the decision log with the spec link. Dispatch `skills/brainstorming/spec-document-reviewer-prompt.md`; findings at this stage are gating. Then ask the human partner:
+Update Phase 4 of the decision log with the spec link. Dispatch `skills/brainstorming/spec-document-reviewer-prompt.md`; findings at this stage are gating. Then dispatch `skills/brainstorming/prompts/trace-reviewer-prompt.md` with the decision-log and spec paths as inputs — findings at this handoff are **gating**. Record trace-reviewer output in Phase 4 of the decision log. Then ask the human partner:
 
 > "Spec written and committed to `<path>` with decision log at `<decision-log-path>`. Please review and let me know if you want changes before we start the implementation plan."
 

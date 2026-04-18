@@ -146,6 +146,12 @@ Every plan MUST end with this block. Leave the checkboxes empty when you write t
 _Filled by plan-document-reviewer. Do not pre-tick._
 ```
 
+## Trace Handoff Gate
+
+Before offering the execution choice below, dispatch `skills/brainstorming/prompts/trace-reviewer-prompt.md` with the spec path and the freshly written plan path as inputs. At this spec → plan handoff, trace-reviewer findings are **gating**: orphans and missing downstream coverage must be resolved (or explicitly accepted by the human partner) before execution begins.
+
+If no brainstorm decision log exists for this work, skip the trace handoff gate — note its absence and proceed.
+
 ## Execution Handoff
 
 After saving the plan, offer execution choice:

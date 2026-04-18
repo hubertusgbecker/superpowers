@@ -86,7 +86,11 @@
 
 **Spec document:** <relative link — e.g. `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md`>
 
-> The spec document MUST include a `Decision log:` header pointing back to this file so `verification-before-completion` can find it.
+> The spec document MUST include a `Decision log:` header pointing back to this file so `verification-before-completion` can find it. Example at the top of the spec:
+>
+> ```markdown
+> **Decision log:** [2026-04-18-<slug>.md](../decisions/2026-04-18-<slug>.md)
+> ```
 
 **Trace reviewer findings** (brainstorm → spec handoff):
 <pasted findings, or "clean">

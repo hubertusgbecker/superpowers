@@ -118,7 +118,7 @@ gemini extensions update superpowers
 
 ## The Basic Workflow
 
-1. **brainstorming** - Activates before writing code. Refines rough ideas through questions, explores alternatives, presents design in sections for validation. Saves design document.
+1. **brainstorming** - Activates before writing code. Runs a phased flow (Survey → Problem → Options → Decisions → Spec) with a context survey up front, MECE option-set review, optional persona reviewers, traceability check at handoff, and a living decision log. Saves design document.
 
 2. **using-git-worktrees** - Activates after design approval. Creates isolated workspace on new branch, runs project setup, verifies clean test baseline.
 
