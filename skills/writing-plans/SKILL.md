@@ -131,6 +131,21 @@ After writing the complete plan, look at the spec with fresh eyes and check the 
 
 If you find issues, fix them inline. No need to re-review — just fix and move on. If you find a spec requirement with no task, add the task.
 
+## Plan MECE Self-Check (filled by the reviewer)
+
+Every plan MUST end with this block. Leave the checkboxes empty when you write the plan — the plan-document-reviewer fills them during review.
+
+```markdown
+## Plan MECE Self-Check
+
+- [ ] No redundancy between tasks (R)
+- [ ] No contradictions with the spec (C)
+- [ ] No gaps in spec coverage (G)
+- [ ] No overlap so large that tasks would step on each other (O)
+
+_Filled by plan-document-reviewer. Do not pre-tick._
+```
+
 ## Execution Handoff
 
 After saving the plan, offer execution choice:
