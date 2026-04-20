@@ -17,123 +17,119 @@ Do NOT invoke any implementation skill, write any code, scaffold any project, or
 
 Every project goes through this process. A todo list, a single-function utility, a config change — all of them. "Simple" projects are where unexamined assumptions cause the most wasted work. The design can be short (a few sentences for truly simple projects), but you MUST present it and get approval.
 
-## Checklist
+## Phased Checklist
 
-You MUST create a task for each of these items and complete them in order:
+Brainstorming runs in five phases. Each phase has an explicit gate. You MUST create a task for each phase and complete them in order.
 
-1. **Explore project context** — check files, docs, recent commits
-2. **Offer visual companion** (if topic will involve visual questions) — this is its own message, not combined with a clarifying question. See the Visual Companion section below.
-3. **Ask clarifying questions** — one at a time, understand purpose/constraints/success criteria
-4. **Propose 2-3 approaches** — with trade-offs and your recommendation
-5. **Present design** — in sections scaled to their complexity, get user approval after each section
-6. **Write design doc** — save to `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md` and commit
-7. **Spec self-review** — quick inline check for placeholders, contradictions, ambiguity, scope (see below)
-8. **User reviews written spec** — ask user to review the spec file before proceeding
-9. **Transition to implementation** — invoke writing-plans skill to create implementation plan
+1. **Phase 0 — Survey** — dispatch research-subagent; start decision log; confirm with the human partner before advancing.
+2. **Phase 1 — Problem framing** — clarify purpose, constraints, success criteria; capture in decision log.
+3. **Phase 2 — Options** — propose 2–3 approaches (visual or text); dispatch option-set-reviewer (advisory).
+4. **Phase 3 — Decisions** — human partner picks; record each as `D-N: <decision> — <rationale>` in the decision log.
+5. **Phase 4 — Spec** — write spec with a `Decision log:` header back-link; self-review; human-partner review; dispatch spec-document-reviewer.
+
+Reviewers are advisory in Phases 1–3 and gating at Phase 4. The terminal state is invoking `superpowers:writing-plans`. Do NOT invoke any other implementation skill.
 
 ## Process Flow
 
 ```dot
 digraph brainstorming {
-    "Explore project context" [shape=box];
+    "Phase 0: Survey" [shape=box];
+    "Confirm survey?" [shape=diamond];
     "Visual questions ahead?" [shape=diamond];
-    "Offer Visual Companion\n(own message, no other content)" [shape=box];
-    "Ask clarifying questions" [shape=box];
-    "Propose 2-3 approaches" [shape=box];
-    "Present design sections" [shape=box];
-    "User approves design?" [shape=diamond];
-    "Write design doc" [shape=box];
-    "Spec self-review\n(fix inline)" [shape=box];
+    "Offer Visual Companion\n(own message)" [shape=box];
+    "Phase 1: Problem framing" [shape=box];
+    "Phase 2: Options\n(+ option-set-reviewer)" [shape=box];
+    "Phase 3: Decisions\n(log D-N + rationale)" [shape=box];
+    "Phase 4: Spec\n(+ self-review + spec reviewer)" [shape=box];
     "User reviews spec?" [shape=diamond];
-    "Invoke writing-plans skill" [shape=doublecircle];
+    "Invoke writing-plans" [shape=doublecircle];
 
-    "Explore project context" -> "Visual questions ahead?";
-    "Visual questions ahead?" -> "Offer Visual Companion\n(own message, no other content)" [label="yes"];
-    "Visual questions ahead?" -> "Ask clarifying questions" [label="no"];
-    "Offer Visual Companion\n(own message, no other content)" -> "Ask clarifying questions";
-    "Ask clarifying questions" -> "Propose 2-3 approaches";
-    "Propose 2-3 approaches" -> "Present design sections";
-    "Present design sections" -> "User approves design?";
-    "User approves design?" -> "Present design sections" [label="no, revise"];
-    "User approves design?" -> "Write design doc" [label="yes"];
-    "Write design doc" -> "Spec self-review\n(fix inline)";
-    "Spec self-review\n(fix inline)" -> "User reviews spec?";
-    "User reviews spec?" -> "Write design doc" [label="changes requested"];
-    "User reviews spec?" -> "Invoke writing-plans skill" [label="approved"];
+    "Phase 0: Survey" -> "Confirm survey?";
+    "Confirm survey?" -> "Phase 0: Survey" [label="re-scope"];
+    "Confirm survey?" -> "Visual questions ahead?" [label="yes, proceed"];
+    "Visual questions ahead?" -> "Offer Visual Companion\n(own message)" [label="yes"];
+    "Visual questions ahead?" -> "Phase 1: Problem framing" [label="no"];
+    "Offer Visual Companion\n(own message)" -> "Phase 1: Problem framing";
+    "Phase 1: Problem framing" -> "Phase 2: Options\n(+ option-set-reviewer)";
+    "Phase 2: Options\n(+ option-set-reviewer)" -> "Phase 3: Decisions\n(log D-N + rationale)";
+    "Phase 3: Decisions\n(log D-N + rationale)" -> "Phase 4: Spec\n(+ self-review + spec reviewer)";
+    "Phase 4: Spec\n(+ self-review + spec reviewer)" -> "User reviews spec?";
+    "User reviews spec?" -> "Phase 4: Spec\n(+ self-review + spec reviewer)" [label="changes"];
+    "User reviews spec?" -> "Invoke writing-plans" [label="approved"];
 }
 ```
 
-**The terminal state is invoking writing-plans.** Do NOT invoke frontend-design, mcp-builder, or any other implementation skill. The ONLY skill you invoke after brainstorming is writing-plans.
+## Phase 0 — Survey
 
-## The Process
+Dispatch a research-only subagent using `skills/brainstorming/prompts/research-subagent-prompt.md`. It produces a one-screen context survey listing existing skills, plans, specs, and prior decisions that touch the topic.
 
-**Understanding the idea:**
+Start a fresh decision log at `docs/superpowers/decisions/YYYY-MM-DD-<slug>.md` using `skills/brainstorming/decision-log-template.md`. Paste or link the survey into Phase 0 of the log.
 
-- Check out the current project state first (files, docs, recent commits)
-- Before asking detailed questions, assess scope: if the request describes multiple independent subsystems (e.g., "build a platform with chat, file storage, billing, and analytics"), flag this immediately. Don't spend questions refining details of a project that needs to be decomposed first.
-- If the project is too large for a single spec, help the user decompose into sub-projects: what are the independent pieces, how do they relate, what order should they be built? Then brainstorm the first sub-project through the normal design flow. Each sub-project gets its own spec → plan → implementation cycle.
-- For appropriately-scoped projects, ask questions one at a time to refine the idea
-- Prefer multiple choice questions when possible, but open-ended is fine too
-- Only one question per message - if a topic needs more exploration, break it into multiple questions
-- Focus on understanding: purpose, constraints, success criteria
+**Gate:** surface the decision-log path to the human partner and explicitly ask:
 
-**Exploring approaches:**
+> "Survey complete. Decision log started at `<path>`. Ready to proceed to Problem framing (Phase 1)?"
 
-- Propose 2-3 different approaches with trade-offs
-- Present options conversationally with your recommendation and reasoning
-- Lead with your recommended option and explain why
+Do not advance until the human partner confirms. Record the decision-log path in session state so downstream phases and `skills/verification-before-completion` can reference it.
 
-**Presenting the design:**
+**Skip only when** the human partner has already stated the topic is greenfield with no prior work, and confirms skipping.
 
-- Once you believe you understand what you're building, present the design
-- Scale each section to its complexity: a few sentences if straightforward, up to 200-300 words if nuanced
-- Ask after each section whether it looks right so far
-- Cover: architecture, components, data flow, error handling, testing
-- Be ready to go back and clarify if something doesn't make sense
+## Phase 1 — Problem framing
 
-**Design for isolation and clarity:**
+Ask questions one at a time to refine the idea. Prefer multiple-choice when possible. Focus on purpose, constraints, success criteria. Capture results in Phase 1 of the decision log: problem statement, non-goals, constraints.
 
-- Break the system into smaller units that each have one clear purpose, communicate through well-defined interfaces, and can be understood and tested independently
-- For each unit, you should be able to answer: what does it do, how do you use it, and what does it depend on?
-- Can someone understand what a unit does without reading its internals? Can you change the internals without breaking consumers? If not, the boundaries need work.
-- Smaller, well-bounded units are also easier for you to work with - you reason better about code you can hold in context at once, and your edits are more reliable when files are focused. When a file grows large, that's often a signal that it's doing too much.
+Before detailed questions, assess scope. If the request describes multiple independent subsystems, flag it and help the human partner decompose into sub-projects — each sub-project gets its own decision log, spec, and plan.
 
-**Working in existing codebases:**
+## Phase 2 — Options
 
-- Explore the current structure before proposing changes. Follow existing patterns.
-- Where existing code has problems that affect the work (e.g., a file that's grown too large, unclear boundaries, tangled responsibilities), include targeted improvements as part of the design - the way a good developer improves code they're working in.
-- Don't propose unrelated refactoring. Stay focused on what serves the current goal.
+Propose 2–3 approaches with trade-offs. Lead with your recommendation and explain why. Record options in Phase 2 of the decision log.
 
-## After the Design
+Dispatch the option-set-reviewer using `skills/brainstorming/prompts/option-set-reviewer-prompt.md`. Findings are advisory; present them to the human partner. The brainstorm does not block on review status.
 
-**Documentation:**
+**Optional persona reviewers** — dispatch one or more when the decision warrants extra scrutiny:
 
-- Write the validated design (spec) to `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md`
-  - (User preferences for spec location override this default)
-- Use elements-of-style:writing-clearly-and-concisely skill if available
-- Commit the design document to git
+- `skills/brainstorming/prompts/personas/skeptic.md` — hard-to-reverse or architecturally committing decisions.
+- `skills/brainstorming/prompts/personas/end-user.md` — user-facing surfaces (CLI, UI, API ergonomics, prompts, docs).
+- `skills/brainstorming/prompts/personas/ops-security.md` — network, storage, auth, secrets, shell execution, external services.
+- `skills/brainstorming/prompts/personas/future-maintainer.md` — architecture-setting or contract-defining decisions likely to be revisited.
 
-**Spec Self-Review:**
-After writing the spec document, look at it with fresh eyes:
+Persona reviewers are opt-in. Do not run them by default on small decisions.
 
-1. **Placeholder scan:** Any "TBD", "TODO", incomplete sections, or vague requirements? Fix them.
-2. **Internal consistency:** Do any sections contradict each other? Does the architecture match the feature descriptions?
-3. **Scope check:** Is this focused enough for a single implementation plan, or does it need decomposition?
-4. **Ambiguity check:** Could any requirement be interpreted two different ways? If so, pick one and make it explicit.
+## Phase 3 — Decisions
 
-Fix any issues inline. No need to re-review — just fix and move on.
+The human partner picks. Capture each choice in Phase 3 of the decision log as `D-N: <decision> — <rationale>`. Capture deferred or dropped options with a one-line reason.
 
-**User Review Gate:**
-After the spec review loop passes, ask the user to review the written spec before proceeding:
+## Phase 4 — Spec
 
-> "Spec written and committed to `<path>`. Please review it and let me know if you want to make any changes before we start writing out the implementation plan."
+Write the design spec to `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md` (user preferences override this default). Scale each section to its complexity — a few sentences if straightforward, up to 200–300 words if nuanced. Cover architecture, components, data flow, error handling, testing. Use `elements-of-style:writing-clearly-and-concisely` if available.
 
-Wait for the user's response. If they request changes, make them and re-run the spec review loop. Only proceed once the user approves.
+**The spec MUST include a header `Decision log:` pointing back to the decision-log file.** Downstream skills (`verification-before-completion`, trace-reviewer) rely on this link.
 
-**Implementation:**
+Design for isolation and clarity — small units with one clear purpose and well-defined interfaces. In existing codebases, include targeted improvements the current work makes necessary; do not propose unrelated refactoring.
 
-- Invoke the writing-plans skill to create a detailed implementation plan
-- Do NOT invoke any other skill. writing-plans is the next step.
+Commit the spec. Then self-review with fresh eyes:
+
+1. Placeholder scan — "TBD", "TODO", vague requirements → fix.
+2. Internal consistency — do sections contradict each other?
+3. Scope check — focused enough for a single plan, or needs decomposition?
+4. Ambiguity check — any requirement readable two ways? Pick one.
+
+Update Phase 4 of the decision log with the spec link. Dispatch `skills/brainstorming/spec-document-reviewer-prompt.md`; findings at this stage are gating. Then dispatch `skills/brainstorming/prompts/trace-reviewer-prompt.md` with the decision-log and spec paths as inputs — findings at this handoff are **gating**. Record trace-reviewer output in Phase 4 of the decision log. Then ask the human partner:
+
+> "Spec written and committed to `<path>` with decision log at `<decision-log-path>`. Please review and let me know if you want changes before we start the implementation plan."
+
+If the human partner requests changes, make them and re-run the spec-reviewer. Only proceed once approved.
+
+**Implementation:** invoke `superpowers:writing-plans`. Do NOT invoke any other skill.
+
+## Backward navigation
+
+If the human partner reopens a previously decided phase, do NOT just edit — first enumerate every downstream artifact that may need re-validation:
+
+- Updated problem statement (Phase 1) → options in Phase 2, all decisions in Phase 3, spec sections in Phase 4, plan tasks, verification report.
+- Updated option or decision (Phase 2 or 3) → spec sections tied to that decision, plan tasks tied to that spec section, verification rows.
+- Updated spec section (Phase 4) → plan tasks and verification rows tied to that section.
+
+Confirm with the human partner before editing. Record the revision in the decision log's Change Log.
 
 ## Key Principles
 

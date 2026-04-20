@@ -653,3 +653,24 @@ Same cycle: RED (baseline) → GREEN (write skill) → REFACTOR (close loopholes
 Same benefits: Better quality, fewer surprises, bulletproof results.
 
 If you follow TDD for code, follow it for skills. It's the same discipline applied to documentation.
+
+## Soul / Duties / Workflow Separation (pattern, not mandate)
+
+When a skill grows large, consider splitting its content along three axes:
+
+- **Soul** — the skill's identity and why it exists. Immutable. Changing it breaks the skill.
+- **Duties** — the list of things the skill does. Customizable by users who fork or extend.
+- **Workflow** — the ordered steps by which duties are carried out. Customizable — users may reorder, add gates, or skip optional steps.
+
+Keeping these separate makes it safer for users to override one piece without breaking the others. **Do not retroactively refactor existing skills** just to apply this pattern; adopt it when a skill genuinely outgrows a flat structure.
+
+## Optional Input/Output Contract (for tool-wrapping skills)
+
+If a skill wraps a specific tool or script, include a `## Contract` section declaring:
+
+- **Inputs** — what the skill expects (paths, flags, structured data).
+- **Outputs** — what it produces and where.
+- **Side effects** — files written, processes started, network calls.
+
+A written contract lets a future author swap the underlying tool without touching the skill's callers. This is **optional**, not enforced, and should be added only when the contract would materially help maintainers.
+

@@ -44,6 +44,17 @@ Task tool (general-purpose):
 
     **Recommendations (advisory, do not block approval):**
     - [suggestions for improvement]
+
+    **Plan MECE Self-Check (fill in the plan's block):**
+    After writing your review, update the `## Plan MECE Self-Check`
+    block in the plan itself by ticking each checkbox you actively
+    verified:
+    - [ ] No redundancy between tasks (R)
+    - [ ] No contradictions with the spec (C)
+    - [ ] No gaps in spec coverage (G)
+    - [ ] No overlap so large that tasks would step on each other (O)
+    Only tick boxes you actually checked. Leave empty any box you did
+    not verify; flag the unchecked items as Recommendations.
 ```
 
 **Reviewer returns:** Status, Issues (if any), Recommendations

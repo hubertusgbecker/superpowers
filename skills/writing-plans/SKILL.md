@@ -131,6 +131,27 @@ After writing the complete plan, look at the spec with fresh eyes and check the 
 
 If you find issues, fix them inline. No need to re-review — just fix and move on. If you find a spec requirement with no task, add the task.
 
+## Plan MECE Self-Check (filled by the reviewer)
+
+Every plan MUST end with this block. Leave the checkboxes empty when you write the plan — the plan-document-reviewer fills them during review.
+
+```markdown
+## Plan MECE Self-Check
+
+- [ ] No redundancy between tasks (R)
+- [ ] No contradictions with the spec (C)
+- [ ] No gaps in spec coverage (G)
+- [ ] No overlap so large that tasks would step on each other (O)
+
+_Filled by plan-document-reviewer. Do not pre-tick._
+```
+
+## Trace Handoff Gate
+
+Before offering the execution choice below, dispatch `skills/brainstorming/prompts/trace-reviewer-prompt.md` with the spec path and the freshly written plan path as inputs. At this spec → plan handoff, trace-reviewer findings are **gating**: orphans and missing downstream coverage must be resolved (or explicitly accepted by the human partner) before execution begins.
+
+If no brainstorm decision log exists for this work, skip the trace handoff gate — note its absence and proceed.
+
 ## Execution Handoff
 
 After saving the plan, offer execution choice:

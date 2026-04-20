@@ -130,6 +130,25 @@ From 24 failure memories:
 - Implications of success
 - ANY communication suggesting completion/correctness
 
+## Brainstorm Decision Logs (optional artifact)
+
+If the work you are about to mark complete was brainstormed through `superpowers:brainstorming`, a decision log exists at `docs/superpowers/decisions/<slug>.md`. Produce or update a verification report from `skills/brainstorming/verification-report-template.md` **in addition to** running the verification commands above. This is an *additional* artifact; it does not replace the Iron Law.
+
+### Decision-log discovery contract
+
+Find the decision log in this priority order:
+
+1. **Explicit:** the human partner (or the dispatcher) provided the decision-log path. Use it.
+2. **Spec header link:** if the spec doc being verified contains a `Decision log:` header link (set in `superpowers:brainstorming` Phase 4), follow it.
+3. **Slug match:** a single file in `docs/superpowers/decisions/` whose slug matches the current branch name or spec filename.
+4. **Ask:** if none of the above resolves, ask the human partner for the path. **Do NOT guess from recency.**
+
+If no decision log exists for this work, skip the report step and record "no brainstorm decision log associated with this work" in the verification output. Do not fabricate one retroactively.
+
+### What the report covers
+
+The report pairs each `D-N` decision with what shipped, lists dropped or deferred decisions with reasons, and maps the trace `decision → spec section → plan task → commit(s)`. See `skills/brainstorming/verification-report-template.md`.
+
 ## The Bottom Line
 
 **No shortcuts for verification.**
