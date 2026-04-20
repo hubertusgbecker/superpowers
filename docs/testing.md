@@ -301,3 +301,23 @@ Session transcripts are JSONL (JSON Lines) files where each line is a JSON objec
 ```
 
 The `agentId` field links to subagent sessions, and the `usage` field contains token usage for that specific subagent invocation.
+
+## Pressure-testing brainstorming flow changes
+
+When changing the `superpowers:brainstorming` skill, run the same topic through the old and new flow side-by-side and compare artifacts. See [tests/ac10-pressure/comparison.md](../tests/ac10-pressure/comparison.md) for the 2026-04-18 reference run.
+
+**Method (two topics, one small and one with operational concerns):**
+
+1. Pick two small real brainstorm topics.
+2. Simulate each topic under both the pre-change and new flow in isolated subagents so they cannot cross-contaminate.
+3. Save artifacts under `tests/ac10-pressure/topicN-{old,new}-{spec,decision-log}.md`.
+4. Write a `comparison.md` that measures: spec length, number of decisions with explicit rationale, trace-reviewer orphan count, findings from option-set reviewer and any persona reviewers, and any finding the old flow missed.
+
+**Pass criteria:**
+
+- Every spec section traces to a `D-N` in the log.
+- Trace-reviewer reports zero orphans at brainstorm → spec handoff.
+- The new flow surfaces at least one finding the old flow missed on the same input.
+
+Do **not** use "shorter spec" as a success metric. Specs that carry more structured information (traceability headers, security constraints, SLA sections) will be longer, and that is the expected outcome.
+
