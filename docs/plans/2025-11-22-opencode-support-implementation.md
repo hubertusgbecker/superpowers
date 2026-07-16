@@ -780,7 +780,7 @@ git commit -m "feat: implement session.started hook for opencode"
 ```bash
 # Clone superpowers skills to OpenCode config directory
 mkdir -p ~/.config/opencode/superpowers
-git clone https://github.com/obra/superpowers.git ~/.config/opencode/superpowers
+git clone https://github.com/hubertusgbecker/superpowers.git ~/.config/opencode/superpowers
 ```
 
 ### 2. Install the Plugin
@@ -878,7 +878,7 @@ When a skill references a Claude Code tool you don't have:
 
 ## Getting Help
 
-- Report issues: https://github.com/obra/superpowers/issues
+- Report issues: https://github.com/hubertusgbecker/superpowers/issues
 - Documentation: https://github.com/obra/superpowers
 ```
 

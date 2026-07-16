@@ -1315,7 +1315,7 @@ No — every change supports "drill is now evals/ inside superpowers". Multiple 
 ## Existing PRs
 
 - [x] I have reviewed all open AND closed PRs for duplicates or prior art
-- Related PRs: #1486 (obra/superpowers cross-platform PR — independent; no shared file changes besides README, which has no overlap)
+- Related PRs: #1486 (hubertusgbecker/superpowers cross-platform PR — independent; no shared file changes besides README, which has no overlap)
 
 ## Environment tested
 
@@ -1344,7 +1344,7 @@ Drill's own pytest suite passes from the new location. `triggering-test-driven-d
 
 ## Action items after merge
 
-1. Archive obra/drill on GitHub (mark read-only, add README pointer to obra/superpowers/evals/).
+1. Archive obra/drill on GitHub (mark read-only, add README pointer to hubertusgbecker/superpowers/evals/).
 2. The spec lists CI integration, scenario co-location with skills, and Python package rename as deferred work. Open issues for any of these you want tracked.
 EOF
 )"
