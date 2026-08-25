@@ -332,6 +332,10 @@ Superpowers updates are somewhat coding-agent dependent, but are often automatic
 
 MIT License - see LICENSE file for details
 
+## Privacy
+
+This fork has **removed all telemetry** from the visual companion. The brainstorming companion makes no outbound network requests. The upstream's remote image beacon (which sent the Superpowers version to primeradiant.com on every session) has been removed. Branding renders entirely from local text.
+
 ## Community
 
 Superpowers is built by [Jesse Vincent](https://blog.fsck.com) and the rest of the folks at [Prime Radiant](https://primeradiant.com).
