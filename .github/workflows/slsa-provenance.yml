@@ -1,0 +1,41 @@
+name: SLSA provenance
+
+on:
+  release:
+    types: [published]
+
+permissions: read-all
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      hashes: ${{ steps.hash.outputs.hashes }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Build and attach the source archive
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git archive --format=tar.gz --prefix="superpowers-${TAG}/" -o "superpowers-${TAG}.tar.gz" HEAD
+          gh release upload "$TAG" "superpowers-${TAG}.tar.gz" --clobber
+
+      - name: Hash the archive
+        id: hash
+        run: echo "hashes=$(sha256sum superpowers-*.tar.gz | base64 -w0)" >> "$GITHUB_OUTPUT"
+
+  provenance:
+    needs: [build]
+    permissions:
+      actions: read
+      id-token: write
+      contents: write
+    # The generator must be referenced by tag, not by commit SHA.
+    uses: slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml@v2.1.0
+    with:
+      base64-subjects: ${{ needs.build.outputs.hashes }}
+      upload-assets: true
