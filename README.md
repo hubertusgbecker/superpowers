@@ -31,7 +31,6 @@ Superpowers is a complete software development methodology for your coding agent
 - [Contributing](#contributing)
 - [Updating](#updating)
 - [License](#license)
-- [Visual companion telemetry](#visual-companion-telemetry)
 
 ## How it works
 
@@ -72,7 +71,7 @@ The Superpowers marketplace provides Superpowers and some other related plugins 
 - Register the marketplace:
 
   ```bash
-  /plugin marketplace add obra/superpowers-marketplace
+  /plugin marketplace add hubertusgbecker/superpowers-marketplace
   ```
 
 - Install the plugin from this marketplace:
@@ -86,7 +85,7 @@ The Superpowers marketplace provides Superpowers and some other related plugins 
 Install Superpowers as a plugin from this repository:
 
 ```bash
-agy plugin install https://github.com/obra/superpowers
+agy plugin install https://github.com/hubertusgbecker/superpowers
 ```
 
 Antigravity lists each installed skill's description, and the description of
@@ -134,7 +133,7 @@ Superpowers is available via the [official Codex plugin marketplace](https://git
 - Install the plugin from this repository:
 
   ```bash
-  devin plugins install obra/superpowers
+  devin plugins install hubertusgbecker/superpowers
   ```
 
 - Update to the latest version with:
@@ -148,7 +147,7 @@ Superpowers is available via the [official Codex plugin marketplace](https://git
 - Register the marketplace:
 
   ```bash
-  droid plugin marketplace add https://github.com/obra/superpowers
+  droid plugin marketplace add https://github.com/hubertusgbecker/superpowers
   ```
 
 - Install the plugin:
@@ -162,7 +161,7 @@ Superpowers is available via the [official Codex plugin marketplace](https://git
 - Install the extension:
 
   ```bash
-  gemini extensions install https://github.com/obra/superpowers
+  gemini extensions install https://github.com/hubertusgbecker/superpowers
   ```
 
 - Update later:
@@ -176,7 +175,7 @@ Superpowers is available via the [official Codex plugin marketplace](https://git
 - Register the marketplace:
 
   ```bash
-  copilot plugin marketplace add obra/superpowers-marketplace
+  copilot plugin marketplace add hubertusgbecker/superpowers-marketplace
   ```
 
 - Install the plugin:
@@ -216,7 +215,7 @@ Superpowers is available in Kimi Code's plugin marketplace.
 - Or install directly from this repository:
 
   ```text
-  /plugins install https://github.com/obra/superpowers
+  /plugins install https://github.com/hubertusgbecker/superpowers
   ```
 
 - Detailed docs: [docs/README.kimi.md](docs/README.kimi.md)
@@ -229,7 +228,7 @@ already use it in another harness.
 - Tell OpenCode:
 
   ```
-  Fetch and follow instructions from https://raw.githubusercontent.com/obra/superpowers/refs/heads/main/.opencode/INSTALL.md
+  Fetch and follow instructions from https://raw.githubusercontent.com/hubertusgbecker/superpowers/refs/heads/main/.opencode/INSTALL.md
   ```
 
 - Detailed docs: [docs/README.opencode.md](docs/README.opencode.md)
@@ -239,7 +238,7 @@ already use it in another harness.
 Install Superpowers as a Pi package from this repository:
 
 ```bash
-pi install git:github.com/obra/superpowers
+pi install git:github.com/hubertusgbecker/superpowers
 ```
 
 For local development, run Pi with this checkout loaded as a temporary package:
@@ -257,7 +256,7 @@ Qwen Code installs plugins from Claude Code marketplaces directly.
 - Install the plugin from this repository, and pick `superpowers` when prompted:
 
   ```bash
-  qwen extensions install obra/superpowers
+  qwen extensions install hubertusgbecker/superpowers
   ```
 
 - Update later:
@@ -271,7 +270,7 @@ Qwen Code installs plugins from Claude Code marketplaces directly.
 Install Superpowers as a Hermes plugin from this repository:
 
 ```bash
-hermes plugins install obra/superpowers --enable
+hermes plugins install hubertusgbecker/superpowers --enable
 ```
 
 Restart any active Hermes sessions after installing. Note: Hermes has no
@@ -292,7 +291,7 @@ Superpowers is available as a native Muse plugin — same repo, same skills, all
   Or clone and install:
 
   ```bash
-  git clone https://github.com/obra/superpowers.git
+  git clone https://github.com/hubertusgbecker/superpowers.git
   muse plugins install ./superpowers
   muse plugins approve superpowers
   ```
@@ -328,14 +327,6 @@ Restart any active Muse sessions after installing so the `SessionStart` hook tak
 Sometimes a session misbehaves: a skill fires when it shouldn't, stays silent when it should, or the agent ignores its plan, repeats work, or burns more tokens than you'd expect. Ask your coding agent to "figure out what went wrong with superpowers in this session" and it will invoke the **diagnosing-superpowers** skill. To examine an earlier session, name it: "figure out what went wrong with superpowers in session `<id>`".
 
 The skill reads the session transcript, reports what happened with line-level evidence, and, if you want, packages a scrubbed bundle for a bug report.
-
-## Community
-
-Superpowers is built by [Jesse Vincent](https://blog.fsck.com) and the rest of the folks at [Prime Radiant](https://primeradiant.com).
-
-- **Discord**: [Join us](https://discord.gg/35wsABTejz) for community support, questions, and sharing what you're building with Superpowers
-- **Issues**: https://github.com/obra/superpowers/issues
-- **Release announcements**: [Sign up](https://primeradiant.com/superpowers/) to get notified about new versions
 
 ## What's Inside
 
@@ -395,6 +386,14 @@ Superpowers updates are somewhat coding-agent dependent, but are often automatic
 
 MIT License - see LICENSE file for details
 
-## Visual companion telemetry
+## Privacy
 
-Because skills and plugins don't provide any feedback to creators, we have no idea how many of you are using Superpowers. By default, the Prime Radiant logo on brainstorming's optional visual companion feature is loaded from our website. It includes the version of Superpowers in use. It does not include any details about your project, prompt, or coding agent. We don't see your clicks or anything about what you're building. This helps us have a rough idea of how many folks are using Superpowers and which version of Superpowers they're using. It's 100% optional. To disable this, set the environment variable `SUPERPOWERS_DISABLE_TELEMETRY` to any true value. Superpowers also honors Claude Code's `DISABLE_TELEMETRY` and `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC` opt-outs.
+This fork has **removed all telemetry** from the visual companion. The brainstorming companion makes no outbound network requests. The upstream's remote image beacon (which sent the Superpowers version to primeradiant.com on every session) has been removed. Branding renders entirely from local text.
+
+## Community
+
+Superpowers is built by [Jesse Vincent](https://blog.fsck.com) and the rest of the folks at [Prime Radiant](https://primeradiant.com).
+
+- **Discord**: [Join us](https://discord.gg/35wsABTejz) for community support, questions, and sharing what you're building with Superpowers
+- **Issues**: https://github.com/hubertusgbecker/superpowers/issues
+- **Release announcements**: [Sign up](https://primeradiant.com/superpowers/) to get notified about new versions

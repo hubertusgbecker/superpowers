@@ -12,7 +12,7 @@ probes against `agy` 1.3.1 recorded below.
 
 ## Current state (agy 1.3.1)
 
-- `agy plugin install https://github.com/obra/superpowers` succeeds, but only
+- `agy plugin install https://github.com/hubertusgbecker/superpowers` succeeds, but only
   through agy's Gemini-extension fallback: `agy plugin list` reports
   `"source": "gemini-cli"`. The bootstrap rides `GEMINI.md`'s `@` lines, which
   the model treats as hints and follows with `view_file`. The acceptance test
@@ -65,7 +65,7 @@ matches our other harness dotdirs. Fields:
 | `category` | `Developer Tools` |
 | `keywords` | lowercase, matching `.claude-plugin/plugin.json` keywords |
 | `author` | `{ "name": "Jesse Vincent", "email": "jesse@fsck.com" }`, matching `.claude-plugin/plugin.json` |
-| `homepage`, `repository` | `https://github.com/obra/superpowers` |
+| `homepage`, `repository` | `https://github.com/hubertusgbecker/superpowers` |
 | `license` | `MIT` |
 
 No `skills` or `mcpServers` fields: the defaults (`skills/`, no MCP config) are
@@ -123,7 +123,7 @@ Add `/.antigravity-plugin/` and `/assets/antigravity-logo.png` to
 ### 6. README
 
 The Antigravity install command stays
-`agy plugin install https://github.com/obra/superpowers`. The prose changes from
+`agy plugin install https://github.com/hubertusgbecker/superpowers`. The prose changes from
 "runs the plugin's session-start hook" to describing skill discovery. Add the
 Marketplace route once it exists; until then, no claim about it.
 

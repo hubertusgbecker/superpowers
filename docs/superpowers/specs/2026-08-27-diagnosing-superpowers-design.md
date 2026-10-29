@@ -246,7 +246,7 @@ the skill points at the GitHub issue step and offers to export the bundle.
 Runs when section 7 of the report says *possible* or *likely*, or when the
 user asks.
 
-1. **Search** open and closed issues on `obra/superpowers` for the
+1. **Search** open and closed issues on `hubertusgbecker/superpowers` for the
    symptoms: skill names, error strings, and the observable from the
    problem statement. Use `gh` if it is installed; otherwise the public
    search API (`https://api.github.com/search/issues`) via curl;

@@ -1550,6 +1550,6 @@ None at this time.
 
 ---
 
-**Full Changelog:** https://github.com/obra/superpowers/compare/dd013f6...main
+**Full Changelog:** https://github.com/hubertusgbecker/superpowers/compare/dd013f6...main
 **Skills Repository:** https://github.com/obra/superpowers-skills
-**Issues:** https://github.com/obra/superpowers/issues
+**Issues:** https://github.com/hubertusgbecker/superpowers/issues

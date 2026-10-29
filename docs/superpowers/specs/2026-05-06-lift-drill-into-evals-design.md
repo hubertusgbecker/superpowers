@@ -21,7 +21,7 @@ This work moves drill into superpowers under `evals/`, deletes the redundant bas
 - **CI integration.** Manual-only here. The natural follow-up is "tiered": fast subset on every PR, full sweep nightly + on-demand. That requires API budget decisions, GitHub Actions secrets, and a runner image with `tmux` + `node` + `python` + `claude` / `codex` / `gemini` CLIs installed. Out of scope.
 - **Scenario co-location with skills.** Scenarios stay centralized at `evals/scenarios/`. If we later decide each skill should own its scenarios, that's a path-find-and-rename operation; the YAML format does not change.
 - **Renaming the internal Python package** (`drill` → `evals`). The directory is `evals/` (user-facing); the Python package keeps its `drill` name to keep the diff small. A short note in `evals/README.md` explains.
-- **Drill repo archival.** This PR does not touch `obra/drill`. After merge, the drill repo is archived manually (read-only on GitHub, README pointer to `obra/superpowers/evals/`).
+- **Drill repo archival.** This PR does not touch `obra/drill`. After merge, the drill repo is archived manually (read-only on GitHub, README pointer to `hubertusgbecker/superpowers/evals/`).
 - **Lifting `tests/claude-code/analyze-token-usage.py` into `evals/bin/`.** Useful utility, not test code. Can move later; not required by this PR.
 
 ## Branching
@@ -211,7 +211,7 @@ Each step is a separate commit (or small group of commits). Step 2 is the bigges
 10. Push branch + open PR against dev
     └─ PR description includes: drill SHA pinned at copy, archival action
        item ("after merge: archive obra/drill, add README pointer to
-       obra/superpowers/evals/"), per-deleted-file coverage receipts.
+       hubertusgbecker/superpowers/evals/"), per-deleted-file coverage receipts.
 ```
 
 ## Verification (post-implementation)
