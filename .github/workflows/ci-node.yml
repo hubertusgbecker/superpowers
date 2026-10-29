@@ -1,0 +1,65 @@
+name: CI (Node and shell)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-node-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  node:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [20, 22]
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+          cache-dependency-path: tests/brainstorm-server/package-lock.json
+
+      - name: Install brainstorm-server test dependencies
+        run: npm ci
+        working-directory: tests/brainstorm-server
+
+      - name: Brainstorm server tests (includes telemetry and network guard)
+        run: npm test
+        working-directory: tests/brainstorm-server
+
+      - name: Pi extension
+        run: node tests/pi/test-pi-extension.mjs
+
+  shell:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - name: Skill size limit
+        run: bash tests/skill-size/test-skill-size.sh
+
+      - name: SessionStart hook
+        run: bash tests/hooks/test-session-start.sh
+
+      - name: Shell lint
+        run: bash tests/shell-lint/test-lint-shell.sh
+
+      - name: Codex plugin sync
+        run: bash tests/codex-plugin-sync/test-sync-to-codex-plugin.sh
+
+      - name: Devin plugin
+        run: bash tests/devin/test-devin-plugin.sh
