@@ -536,6 +536,8 @@ async function runTests() {
       fs.writeFileSync(path.join(CONTENT_DIR, 'data.txt'), 'not html');
       await settleWatcher();
 
+      // The server logs screen-added before it broadcasts, so wait for that reload to arrive.
+      await waitFor(() => reloads >= 1, 'Barrier reload should reach the client');
       // The only reload is the one for settleWatcher's own file.
       assert.strictEqual(reloads, 1, 'Should NOT reload for non-HTML files');
       ws.close();
@@ -554,6 +556,8 @@ async function runTests() {
       fs.writeFileSync(path.join(CONTENT_DIR, '._sidecar.html'), 'resource fork');
       await settleWatcher();
 
+      // The server logs screen-added before it broadcasts, so wait for that reload to arrive.
+      await waitFor(() => reloads >= 1, 'Barrier reload should reach the client');
       // The only reload is the one for settleWatcher's own file.
       assert.strictEqual(reloads, 1, 'a ._ dotfile appearing must not trigger a reload');
       ws.close();
