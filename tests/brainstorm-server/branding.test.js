@@ -135,6 +135,50 @@ function assertFramedScreenUsesBrandHeader(html) {
   assert(!html.includes('Click an option above'), 'header should not render the selection instruction');
 }
 
+// Hosts the companion HTML may mention: the XML namespace and this fork's repo link.
+const ALLOWED_URL_PREFIXES = [
+  'http://www.w3.org/',
+  'https://github.com/hubertusgbecker/superpowers'
+];
+
+function assertNoExternalReferences(html) {
+  const urls = html.match(/(?:https?:)?\/\/[A-Za-z0-9.-]+[^\s"'<>)]*/g) || [];
+  const offenders = urls.filter(u => !ALLOWED_URL_PREFIXES.some(p => u.startsWith(p)));
+  assert.deepStrictEqual(offenders, [], 'companion HTML must not reference external hosts');
+  assert(!/<img\b/i.test(html), 'companion HTML must not load images');
+  assert(!/<script\b[^>]*\bsrc=/i.test(html), 'companion HTML must not load external scripts');
+  assert(!/<link\b[^>]*\bhref=/i.test(html), 'companion HTML must not load external stylesheets');
+}
+
+const RUNTIME_SOURCE_ROOTS = [
+  'skills/brainstorming/scripts',
+  'hooks',
+  '.opencode/plugins',
+  '.pi/extensions',
+  '.hermes-plugin',
+  '.muse-plugin'
+];
+
+const FORBIDDEN_RUNTIME_PATTERNS = [
+  [/\bfetch\s*\(/, 'fetch()'],
+  [/XMLHttpRequest/, 'XMLHttpRequest'],
+  [/sendBeacon/, 'sendBeacon'],
+  [/node:https|require\(\s*['"]https['"]\s*\)|from\s+['"]https['"]/, 'https module'],
+  [/\bhttp\.(request|get)\s*\(/, 'http.request/get'],
+  [/\b(curl|wget)\b/, 'curl/wget'],
+  [/\burllib\b|\brequests\./, 'python http client'],
+  [/telemetry/i, 'telemetry'],
+  [/primeradiant\.com/i, 'primeradiant.com']
+];
+
+function listFiles(dir) {
+  if (!fs.existsSync(dir)) return [];
+  return fs.readdirSync(dir, { withFileTypes: true }).flatMap(entry => {
+    const full = path.join(dir, entry.name);
+    return entry.isDirectory() ? listFiles(full) : [full];
+  });
+}
+
 function assertHeaderAvoidsNarrowOverlap(html) {
   assert(
     /grid-template-columns:\s*minmax\(0,\s*1fr\)\s*auto/i.test(html),
@@ -193,6 +237,31 @@ async function main() {
     } finally {
       cleanup(fixture.root);
     }
+  });
+
+  await test('no telemetry: served companion pages reference no external hosts', async () => {
+    const port = 3458;
+    const dir = '/tmp/brainstorm-branding-no-external';
+    await withServer({ port, dir }, async () => {
+      assertNoExternalReferences(await fetchHtml(port));
+      writeFragment(dir);
+      await sleep(300);
+      assertNoExternalReferences(await fetchHtml(port));
+    });
+  });
+
+  await test('no telemetry: runtime sources contain no network or telemetry code', async () => {
+    const hits = [];
+    for (const root of RUNTIME_SOURCE_ROOTS) {
+      for (const file of listFiles(path.join(REPO_ROOT, root))) {
+        if (/\.(md|png|jpe?g|svg|ico)$/i.test(file)) continue;
+        const text = fs.readFileSync(file, 'utf-8');
+        for (const [pattern, label] of FORBIDDEN_RUNTIME_PATTERNS) {
+          if (pattern.test(text)) hits.push(`${path.relative(REPO_ROOT, file)}: ${label}`);
+        }
+      }
+    }
+    assert.deepStrictEqual(hits, [], 'runtime sources must not contain network or telemetry code');
   });
 
   console.log(`\n--- Results: ${passed} passed, ${failed} failed ---`);
