@@ -37,7 +37,9 @@ jobs:
         run: npm test
         working-directory: tests/brainstorm-server
 
+      # The test imports a .ts extension directly, which needs Node's native type stripping (22.18+).
       - name: Pi extension
+        if: matrix.node-version >= 22
         run: node tests/pi/test-pi-extension.mjs
 
   shell:
