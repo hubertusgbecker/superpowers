@@ -31,6 +31,7 @@ Superpowers is a complete software development methodology for your coding agent
 - [Contributing](#contributing)
 - [Updating](#updating)
 - [License](#license)
+- [Privacy](#privacy)
 
 ## How it works
 
@@ -388,7 +389,14 @@ MIT License - see LICENSE file for details
 
 ## Privacy
 
-This fork has **removed all telemetry** from the visual companion. The brainstorming companion makes no outbound network requests. The upstream's remote image beacon (which sent the Superpowers version to primeradiant.com on every session) has been removed. Branding renders entirely from local text.
+This fork contains **no telemetry**: nothing in it collects, records, or reports usage data, and no plugin code, hook, or script phones home.
+
+- **Visual companion:** upstream loaded a logo from primeradiant.com on every brainstorming session, which reported the Superpowers version. That beacon, its opt-out environment variables (`SUPERPOWERS_DISABLE_TELEMETRY` and friends), and the logo styling are removed. Branding renders from local text, and the companion server listens only on `127.0.0.1` by default and makes no outbound requests.
+- **Hooks and harness plugins:** the session-start hook and the OpenCode, Pi, Hermes, and Muse plugins only read local skill files and inject them into the session. They open no network connections.
+- **Only when you invoke it:** the `diagnosing-superpowers` skill reads local session transcripts. It may search this repository's issues for matching symptoms (sending only search terms through `gh` or `curl`), creates an issue only after you approve the exact text, and builds a scrubbed bundle only when you ask. It never uploads anything on its own.
+- **Out of scope:** your coding agent and its model provider have their own data collection, which Superpowers does not control. See their privacy settings.
+
+Links in this README (Discord, Prime Radiant, release announcements) are plain links and are not fetched automatically.
 
 ## Community
 
