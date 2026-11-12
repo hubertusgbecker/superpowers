@@ -150,6 +150,17 @@ async function runTests() {
       'Server should process the barrier file');
   }
 
+  // The server logs a screen on stdout and broadcasts its reload in the same
+  // tick, but the two reach this process on separate channels, so stdout can
+  // win. The server answers a ping on the same socket after the reload, so
+  // once the pong arrives, every reload sent before it has arrived too.
+  function drainSocket(ws) {
+    let ponged = false;
+    ws.once('pong', () => { ponged = true; });
+    ws.ping();
+    return waitFor(() => ponged, 'Server should answer the ping');
+  }
+
   let initialStdout = '';
   let passed = 0;
   let failed = 0;
@@ -535,6 +546,7 @@ async function runTests() {
 
       fs.writeFileSync(path.join(CONTENT_DIR, 'data.txt'), 'not html');
       await settleWatcher();
+      await drainSocket(ws);
 
       // The server logs screen-added before it broadcasts, so wait for that reload to arrive.
       await waitFor(() => reloads >= 1, 'Barrier reload should reach the client');
@@ -555,6 +567,7 @@ async function runTests() {
 
       fs.writeFileSync(path.join(CONTENT_DIR, '._sidecar.html'), 'resource fork');
       await settleWatcher();
+      await drainSocket(ws);
 
       // The server logs screen-added before it broadcasts, so wait for that reload to arrive.
       await waitFor(() => reloads >= 1, 'Barrier reload should reach the client');
