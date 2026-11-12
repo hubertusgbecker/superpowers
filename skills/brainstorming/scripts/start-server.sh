@@ -71,6 +71,12 @@ if [[ -z "$URL_HOST" ]]; then
   fi
 fi
 
+# The host is embedded in the URL the server prints and may open, so only accept hostname/IP characters.
+if ! [[ "$URL_HOST" =~ ^[][A-Za-z0-9.:_-]+$ ]]; then
+  echo "{\"error\": \"--url-host must be a hostname or IP address\"}"
+  exit 1
+fi
+
 if [[ -n "$IDLE_TIMEOUT_MINUTES" ]]; then
   if ! [[ "$IDLE_TIMEOUT_MINUTES" =~ ^[0-9]+$ ]] || [[ "$IDLE_TIMEOUT_MINUTES" -lt 1 ]]; then
     echo "{\"error\": \"--idle-timeout-minutes must be a positive integer\"}"
@@ -127,7 +133,11 @@ if [[ -n "$PROJECT_DIR" ]]; then
   export BRAINSTORM_PORT_FILE="${PROJECT_DIR}/.superpowers/brainstorm/.last-port"
   export BRAINSTORM_TOKEN_FILE="${PROJECT_DIR}/.superpowers/brainstorm/.last-token"
 else
-  SESSION_DIR="/tmp/brainstorm-${SESSION_ID}"
+  # mktemp creates the directory atomically with mode 0700, so another local user can't pre-create it.
+  if ! SESSION_DIR="$(mktemp -d "/tmp/brainstorm-${SESSION_ID}-XXXXXX")"; then
+    echo "{\"error\": \"Cannot create a session directory under /tmp\"}"
+    exit 1
+  fi
 fi
 
 STATE_DIR="${SESSION_DIR}/state"

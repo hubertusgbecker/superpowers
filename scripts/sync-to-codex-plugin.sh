@@ -25,6 +25,7 @@
 # upstream just like a normal sync.
 #
 # Requires: bash, rsync, git, gh (authenticated), python3.
+# Set CODEX_PLUGIN_FORK=owner/repo to push to a repository other than the default.
 
 set -euo pipefail
 
@@ -32,7 +33,7 @@ set -euo pipefail
 # Config — edit as upstream or canonical plugin shape evolves
 # =============================================================================
 
-FORK="prime-radiant-inc/openai-codex-plugins"
+FORK="${CODEX_PLUGIN_FORK:-prime-radiant-inc/openai-codex-plugins}"
 DEFAULT_BASE="main"
 DEST_REL="plugins/superpowers"
 

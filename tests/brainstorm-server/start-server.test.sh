@@ -155,7 +155,38 @@ for relative_dir in "." "new project dir"; do
 done
 
 echo ""
-echo "--- Results: $passed passed, $failed failed ---"
+echo "--- start-server.sh hardening ---"
+
+output=$(PATH="$TEST_DIR/fake-bin:$PATH" MSYSTEM="" \
+  bash "$START_SCRIPT" --project-dir "$TEST_DIR/project" --url-host 'x$(touch pwned)' --foreground 2>&1 || true)
+if [[ "$output" == *"--url-host must be a hostname or IP address"* ]]; then
+  pass "--url-host with shell metacharacters is rejected"
+else
+  fail "--url-host with shell metacharacters is rejected" "got: $output"
+fi
+
+output=$(PATH="$TEST_DIR/fake-bin:$PATH" MSYSTEM="" \
+  bash "$START_SCRIPT" --project-dir "$TEST_DIR/project" --url-host '[::1]' --foreground 2>&1 || true)
+if [[ "$output" == *"--url-host must be"* ]]; then
+  fail "--url-host accepts a bracketed IPv6 literal" "got: $output"
+else
+  pass "--url-host accepts a bracketed IPv6 literal"
+fi
+
+output=$(PATH="$TEST_DIR/fake-bin:$PATH" MSYSTEM="" \
+  bash "$START_SCRIPT" --foreground 2>&1 || true)
+tmp_session=$(echo "$output" | grep "CAPTURED_BRAINSTORM_DIR=" | head -1 | sed 's/CAPTURED_BRAINSTORM_DIR=//')
+if [[ "$tmp_session" == /tmp/brainstorm-*-* && -d "$tmp_session" ]]; then
+  mode=$(stat -c '%a' "$tmp_session" 2>/dev/null || stat -f '%Lp' "$tmp_session")
+  if [[ "$mode" == "700" ]]; then
+    pass "default session dir is created privately with mktemp"
+  else
+    fail "default session dir is created privately with mktemp" "mode was $mode for $tmp_session"
+  fi
+else
+  fail "default session dir is created privately with mktemp" "got: $output"
+fi
+rm -rf "$tmp_session"
 if [[ $failed -gt 0 ]]; then
   exit 1
 fi

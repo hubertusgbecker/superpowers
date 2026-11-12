@@ -103,6 +103,8 @@ bash scripts/start-server.sh \
 
 Use `--url-host` to control what hostname is printed in the returned URL JSON.
 
+A non-loopback bind serves plain HTTP, so the session key in the URL and cookie crosses the network unencrypted. Reach it through an SSH tunnel (`ssh -L <port>:localhost:<port> host`) or a TLS-terminating reverse proxy, and use `0.0.0.0` only on a network you trust.
+
 ## The Loop
 
 1. **Check server is alive**, then **write HTML** to a new file in `screen_dir`:

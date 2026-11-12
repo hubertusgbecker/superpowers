@@ -29,6 +29,7 @@ const EXPECTED_SECURITY_HEADERS = {
   'referrer-policy': 'no-referrer',
   'cache-control': 'no-store',
   'x-frame-options': 'DENY',
+  'x-content-type-options': 'nosniff',
   'content-security-policy': "frame-ancestors 'none'",
   'cross-origin-resource-policy': 'same-origin'
 };

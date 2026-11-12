@@ -229,8 +229,10 @@ already use it in another harness.
 - Tell OpenCode:
 
   ```
-  Fetch and follow instructions from https://raw.githubusercontent.com/hubertusgbecker/superpowers/refs/heads/main/.opencode/INSTALL.md
+  Fetch and follow instructions from https://raw.githubusercontent.com/hubertusgbecker/superpowers/refs/tags/v7.0.2/.opencode/INSTALL.md
   ```
+
+  The URL is pinned to a release tag so the instructions your agent follows can't change underneath you. Replace `v7.0.2` with the release you want.
 
 - Detailed docs: [docs/README.opencode.md](docs/README.opencode.md)
 
